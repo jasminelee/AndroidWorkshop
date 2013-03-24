@@ -48,7 +48,11 @@ public class Notepad extends ListActivity {
     	super.onCreate(savedInstanceState);
     	
     	/* YOUR CODE HERE */
-    	
+    	setContentView(R.layout.notes_list);
+    	mDbHelper = new NotesDbAdapter(this);
+    	mDbHelper.open();
+    	fillData();
+    	registerForContextMenu(getListView());    	
     }
 
     private void fillData() {
@@ -68,7 +72,7 @@ public class Notepad extends ListActivity {
     	super.onCreateOptionsMenu(menu);
     	
         /* YOUR CODE HERE */
-    	
+    	menu.add(0,INSERT_ID, 0, R.string.menu_insert);
         return true;
     }
     
@@ -85,6 +89,8 @@ public class Notepad extends ListActivity {
     private void createNote() {
     	
         /* YOUR CODE HERE */
+    	Intent i = new Intent(this, NoteEdit.class);
+    	startActivityForResult(i, ACTIVITY_CREATE);
     	
     }
     
@@ -93,7 +99,7 @@ public class Notepad extends ListActivity {
         super.onActivityResult(requestCode, resultCode, intent);
         
         /* YOUR CODE HERE */
-        
+        fillData();
     }
     
     @Override
@@ -109,6 +115,7 @@ public class Notepad extends ListActivity {
     	super.onCreateContextMenu(menu, v, menuInfo);
     	
         /* YOUR CODE HERE */
+    	menu.add(0, DELETE_ID, 0, R.string.menu_delete);
     	
     }
 
@@ -118,6 +125,9 @@ public class Notepad extends ListActivity {
             case DELETE_ID:
             	
                 /* YOUR CODE HERE */
+            	AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+            	mDbHelper.deleteNote(info.id);
+            	fillData(); 
             	
                 return true;
         }

@@ -41,11 +41,16 @@ public class NoteEdit extends Activity {
         super.onCreate(savedInstanceState);
         
         /* YOUR CODE HERE */
+        setContentView(R.layout.note_edit);
+        setTitle(R.string.edit_note);
         
         mDbHelper = new NotesDbAdapter(this);
         mDbHelper.open();
         
         /* YOUR CODE HERE */
+        mTitleText = (EditText) findViewById(R.id.title);
+        mBodyText = (EditText) findViewById(R.id.body);
+        confirmButton = (Button) findViewById(R.id.confirm);
 
         mRowId = (savedInstanceState == null) ? null :
             (Long) savedInstanceState.getSerializable(NotesDbAdapter.KEY_ROWID);
